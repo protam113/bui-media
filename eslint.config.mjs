@@ -34,14 +34,7 @@ const config = [
   {
     rules: {
       'no-console':
-        env === 'development'
-          ? [
-              'error',
-              {
-                allow: ['log', 'warn', 'error'],
-              },
-            ]
-          : 'error',
+        env === 'development' ? 'off' : ['warn', { allow: ['warn', 'error'] }],
       '@typescript-eslint/no-explicit-any': 'off', // Cho phép sử dụng any
     },
   },
