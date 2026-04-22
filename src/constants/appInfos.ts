@@ -5,7 +5,7 @@ export const appInfo = {
   title: 'Bụi Media - Kiến tạo thương hiệu',
   description:
     'Bụi không chỉ quay video, chúng tôi kể câu chuyện thương hiệu của bạn',
-  domain: 'https://buimedia.com',
+  domain: 'https://bui-media.vercel.app',
   ogImage: '/ogImage.jpg',
   themeColor: '#ffffff',
   keywords: [
@@ -116,7 +116,7 @@ export const viewport: Viewport = {
   themeColor: appInfo.themeColor,
 };
 
-export const siteBaseUrl = 'https://buimedia.com';
+export const siteBaseUrl = 'https://bui-media.vercel.app';
 
 export function generatePageMetadata({
   title,
