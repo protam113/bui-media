@@ -24,9 +24,13 @@ export const appInfo = {
     'dịch vụ media',
     'creative agency việt nam',
   ],
+  twitterCreator: '@bui_media',
+  category: 'Local Business',
+  publisher: 'Bụi Media',
 };
 
 export const metadata: Metadata = {
+  metadataBase: new URL(appInfo.domain),
   title: appInfo.title,
   description: appInfo.description,
   keywords: appInfo.keywords,
@@ -47,7 +51,7 @@ export const metadata: Metadata = {
     url: appInfo.domain,
     images: [
       {
-        url: appInfo.ogImage,
+        url: `${appInfo.domain}${appInfo.ogImage}`,
         width: 1200,
         height: 630,
         alt: appInfo.title,
@@ -60,9 +64,9 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: appInfo.title,
     description: appInfo.description,
-    images: [appInfo.ogImage],
-    creator: '@bui_media',
-    site: '@bui_media',
+    images: [`https://bui-media.vercel.app/`],
+    creator: appInfo.twitterCreator,
+    site: appInfo.twitterCreator,
   },
 
   alternates: {
@@ -85,27 +89,13 @@ export const metadata: Metadata = {
   },
 
   verification: {
-    google: 'DHscGD5w7gIke_3M9XpkRVleQLuva4RO7BrrE4YvC4c',
-    yandex: 'cc89c2e7c496f9c9',
-  },
-  category: 'technology',
-  creator: 'Bui Media',
-  publisher: 'Bui Media',
-
-  authors: [
-    {
-      name: 'Bui Media',
-      url: appInfo.domain,
-    },
-  ],
-
-  formatDetection: {
-    telephone: true,
-    email: true,
-    address: true,
+    google: 'verification_token',
+    yandex: 'verification_token',
   },
 
-  metadataBase: new URL(appInfo.domain),
+  category: appInfo.category,
+  creator: appInfo.twitterCreator,
+  publisher: appInfo.publisher,
 };
 
 export const viewport: Viewport = {
@@ -116,33 +106,88 @@ export const viewport: Viewport = {
   themeColor: appInfo.themeColor,
 };
 
-export const siteBaseUrl = 'https://bui-media.vercel.app';
+// Function to generate metadata for child pages
+export function PageMetadata(
+  pageTitle: string,
+  pageDescription?: string
+): Metadata {
+  return {
+    ...metadata,
+    title: `${pageTitle} | ${appInfo.title}`,
+    description: pageDescription || metadata.description,
+    openGraph: {
+      ...metadata.openGraph,
+      title: `${pageTitle} | ${appInfo.title}`,
+      description: pageDescription || (metadata.description as string),
+    },
+    twitter: {
+      ...metadata.twitter,
+      title: `${pageTitle} | ${appInfo.title}`,
+      description: pageDescription || (metadata.description as string),
+    },
+  };
+}
 
 export function generatePageMetadata({
   title,
   description,
   ogImage,
   path,
+  keywords,
+  type = 'website',
 }: {
   title: string;
   description?: string;
   ogImage?: string;
   path: string;
+  keywords?: string[];
+  type?: 'website' | 'article';
 }): Metadata {
   const url = `${appInfo.domain}${path}`;
   const image = ogImage ?? appInfo.ogImage;
+  const fullTitle = `${title} | ${appInfo.title}`;
+  const desc = description ?? appInfo.description;
 
   return {
-    title: `${title} | ${appInfo.title}`,
-    description: description ?? appInfo.description,
+    metadataBase: new URL(appInfo.domain),
+    title: fullTitle,
+    description: desc,
+    keywords: keywords ?? appInfo.keywords,
     openGraph: {
-      title,
-      description: description ?? appInfo.description,
+      type,
+      title: fullTitle,
+      description: desc,
       url,
-      images: [image],
+      siteName: appInfo.title,
+      images: [
+        {
+          url: `${appInfo.domain}${image}`,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+      locale: 'vi_VN',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: fullTitle,
+      description: desc,
+      images: [`${appInfo.domain}${image}`],
+      creator: appInfo.twitterCreator,
     },
     alternates: {
       canonical: url,
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
     },
   };
 }
