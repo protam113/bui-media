@@ -1,15 +1,28 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 
 export const appInfo = {
-  logo: '/logo.svg', //web logo
-  title: 'App Name', //app name
-  description: 'app description', //app description
-  domain: 'app domain', //app domain
-  ogImage: '/og_logo.svg', //og image
+  logo: '/logo.svg',
+  title: 'Bụi Media - Kiến tạo thương hiệu',
+  description:
+    'Bụi không chỉ quay video, chúng tôi kể câu chuyện thương hiệu của bạn',
+  domain: 'https://buimedia.com',
+  ogImage: '/ogImage.jpg',
   themeColor: '#ffffff',
   keywords: [
-    'keywords', //keywords
-    // ...
+    'xây dựng thương hiệu',
+    'sản xuất video doanh nghiệp',
+    'quay video quảng cáo',
+    'làm video marketing',
+    'kể chuyện thương hiệu',
+    'branding doanh nghiệp',
+    'truyền thông thương hiệu',
+    'video viral',
+    'content marketing',
+    'chiến lược nội dung',
+    'quảng cáo mạng xã hội',
+    'video tiktok doanh nghiệp',
+    'dịch vụ media',
+    'creative agency việt nam',
   ],
 };
 
@@ -25,7 +38,6 @@ export const metadata: Metadata = {
     apple: appInfo.logo,
     shortcut: appInfo.logo,
   },
-  themeColor: appInfo.themeColor,
 
   openGraph: {
     type: 'website',
@@ -35,7 +47,7 @@ export const metadata: Metadata = {
     url: appInfo.domain,
     images: [
       {
-        url: `${appInfo.domain}${appInfo.ogImage}`,
+        url: appInfo.ogImage,
         width: 1200,
         height: 630,
         alt: appInfo.title,
@@ -48,16 +60,9 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: appInfo.title,
     description: appInfo.description,
-    images: [`${appInfo.domain}${appInfo.ogImage}`],
-    creator: '@ugc_creator',
-    site: '@ugc_creator',
-  },
-
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 1,
-    userScalable: false,
+    images: [appInfo.ogImage],
+    creator: '@bui_media',
+    site: '@bui_media',
   },
 
   alternates: {
@@ -80,33 +85,64 @@ export const metadata: Metadata = {
   },
 
   verification: {
-    google: 'verification_token',
-    yandex: 'verification_token',
+    google: 'DHscGD5w7gIke_3M9XpkRVleQLuva4RO7BrrE4YvC4c',
+    yandex: 'cc89c2e7c496f9c9',
+  },
+  category: 'technology',
+  creator: 'Bui Media',
+  publisher: 'Bui Media',
+
+  authors: [
+    {
+      name: 'Bui Media',
+      url: appInfo.domain,
+    },
+  ],
+
+  formatDetection: {
+    telephone: true,
+    email: true,
+    address: true,
   },
 
-  category: 'Marketing Agency',
-  creator: '@ugc_creator',
-  publisher: 'UGC Creator',
+  metadataBase: new URL(appInfo.domain),
 };
 
-// Function to generate metadata for child pages
-export function PageMetadata(
-  pageTitle: string,
-  pageDescription?: string
-): Metadata {
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+  themeColor: appInfo.themeColor,
+};
+
+export const siteBaseUrl = 'https://buimedia.com';
+
+export function generatePageMetadata({
+  title,
+  description,
+  ogImage,
+  path,
+}: {
+  title: string;
+  description?: string;
+  ogImage?: string;
+  path: string;
+}): Metadata {
+  const url = `${appInfo.domain}${path}`;
+  const image = ogImage ?? appInfo.ogImage;
+
   return {
-    ...metadata,
-    title: `${pageTitle} | ${appInfo.title}`,
-    description: pageDescription || metadata.description,
+    title: `${title} | ${appInfo.title}`,
+    description: description ?? appInfo.description,
     openGraph: {
-      ...metadata.openGraph,
-      title: `${pageTitle} | ${appInfo.title}`,
-      description: pageDescription || (metadata.description as string),
+      title,
+      description: description ?? appInfo.description,
+      url,
+      images: [image],
     },
-    twitter: {
-      ...metadata.twitter,
-      title: `${pageTitle} | ${appInfo.title}`,
-      description: pageDescription || (metadata.description as string),
+    alternates: {
+      canonical: url,
     },
   };
 }
