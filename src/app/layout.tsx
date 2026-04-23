@@ -20,7 +20,6 @@ export default function RootLayout({
       <body className={`bg-white antialiased`}>
         <Nav />
         {children}
-        <Footer />
       </body>
     </html>
   );
